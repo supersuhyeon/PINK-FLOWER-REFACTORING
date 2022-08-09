@@ -14,29 +14,29 @@ export default class Field{
     }
 
     setClickListener(onItemClick){
-        this.onItemClick = onItemClick;
+        this.onItemClick = onItemClick; //callback from Game
     }
 
     init(){
         this.field.innerHTML = ''; //reset
-        this._addItem('pinkflower',10,'/img/pinkflower.png')
-        this._addItem('purpleflower',10,'/img/purpleflower.png')
-        this._addItem('redflower',10,'/img/redflower.png')
+        this.addItem('pinkflower',this.pinkFlowerCount,'/img/pinkflower.png')
+        this.addItem('purpleflower',this.purpleFlowerCount,'/img/purpleflower.png')
+        this.addItem('redflower',this.redFlowerCount,'/img/redflower.png')
     }
 
-    _addItem(className,Count,imgSrc){
-                    //need to know field size for position
+    addItem(className,Count,imgSrc){
+    //need to know field size for position
     const x1 = 0;
     const y1 = 0;
     const x2 = this.fieldSize.width - 80; //flowersize width 80px
     const y2 = this.fieldSize.height - 80; //flowersize height 80px
 
     for (let i = 0; i < Count; i++){
-        //each item need to be assigned on the position
+        //each item needs to be assigned on the position
         const item = document.createElement('img')
         item.setAttribute('class',className)
         item.setAttribute('src', imgSrc)
-        item.style.position = 'absolute' //field must have relative on css
+        item.style.position = 'absolute' //relative on css's field
         item.style.top = `${this.randomNumber(y1,y2)}px`
         item.style.left = `${this.randomNumber(x1,x2)}px`
 
@@ -55,8 +55,8 @@ export default class Field{
     if(target.classList.contains('pinkflower')){
         target.remove();
         sound.playPinkFlower()
-        if(this.onItemClick){
-            this.onItemClick('pinkflower')
+        if(this.onItemClick){ //callback (onItemClick) from Game
+            this.onItemClick('pinkflower') //Item === 'pinkflower'
         }
 
     }else if(target.classList.contains('purpleflower')){

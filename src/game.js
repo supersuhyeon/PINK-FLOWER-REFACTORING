@@ -1,0 +1,156 @@
+'use strict'
+
+import * as sound from "./sound.js";
+import Field from "./field.js";
+
+export default class Game{
+
+    constructor(gameDuration, pinkFlowerCount, purpleFlowerCount, redFlowerCount){  
+    this.gameDuration = gameDuration
+    this.pinkFlowerCount = pinkFlowerCount 
+    this.purpleFlowerCount = purpleFlowerCount
+    this.redFlowerCount = redFlowerCount
+
+    this.flowerPlayBtn = document.querySelector('.playbtn')
+    this.flowerTimer = document.querySelector('.timer')
+    this.flowerScore = document.querySelector('.score')
+    this.pinkflowerCount = this.pinkFlowerCount //caution ** capital F/f 
+    this.gameDurationSec = this.gameDuration
+
+    this.isstarted = false; //whether game started or not 게임은 시작하지 않은단계에서 시작 초기값
+    this.score = 0; //점수 담을 공간
+    this.timer = ''; //timer 담을 공간
+
+    const title = document.querySelector('.title')
+    title.innerText = `PICK THE ${this.pinkFlowerCount} PINK FLOWERS 🌸`
+
+    this.flowerPlayBtn.addEventListener('click',()=>{
+    if (this.isstarted){
+        this.gameStopped(); 
+    }else{ 
+        this.gameStarted(); 
+    }
+    })
+
+    this.gameField = new Field(pinkFlowerCount, purpleFlowerCount, redFlowerCount);
+    this.gameField.setClickListener(this.onItemClick)
+}
+
+    setGameStopListener(onGameStop){ 
+    this.onGameStop = onGameStop
+}
+
+    gameStarted(){ 
+    this.isstarted = true; //게임이 시작하고있는상태에서 클릭을 누르면 멈춰야함 그래서 isstarted = true = gamestopped()
+    this.initGame();
+    this.changeStopBtn();
+    this.showTimerandScoreBtn();
+    this.autoTimerStart();
+    sound.playBackground()
+    
+}
+    
+    gameStopped(){
+    this.isstarted = false; //게임이 멈춰진상태에서 클릭을 누르면 재생되어야함 그래서 isstarted = false = gamestarted()
+    this.autoTimerStop();
+    this.playBtnGone();
+    sound.stopBackground()
+    sound.playAlertSound()
+    this.onGameStop && this.onGameStop('cancel')  //game.setGameStopListener((reason)=>{~})                                                       
+}
+
+    finishgame(result){
+    this.isstarted = false;
+    this.autoTimerStop();
+    this.playBtnGone();
+    sound.stopBackground()
+    if(result){
+        sound.playGameWin()
+    }else{
+        sound.playPurpleFlower()
+    }
+    this.onGameStop && this.onGameStop(result ? 'win' : 'lose')  //game.setGameStopListener((reason)=>{~})
+}
+
+    onItemClick = (Item)=>{                      
+
+        if(this.isstarted === false){ //started가 false면 실행하지 말아라 
+            return
+        }
+    
+        if(Item === 'pinkflower'){
+           this.score++
+            this.remainingScoreBoard();
+            if(this.score === this.pinkflowerCount){
+                this.finishgame(true)
+            }
+    
+        }else if(Item === 'purpleflower'){
+            this.finishgame(false);
+        }else{
+            this.finishgame(false)
+        }
+    }
+
+    remainingScoreBoard(){
+        this.flowerScore.innerText = this.pinkflowerCount - this.score;
+    }
+    
+    
+    autoTimerStart(){
+    
+        let currentSec = this.gameDurationSec
+        this.updatetimertext(currentSec)
+       //const myInterval = setInterval(myFunction,2000); clearInterval(myInterval)
+       this.timer = setInterval(()=>{
+    
+            if(currentSec<=0){
+                clearInterval(this.timer)
+                this.finishgame(this.pinkflowerCount===this.score); //boolean
+                return
+            }
+    
+            this.updatetimertext(--currentSec)
+    
+       },1000) 
+    
+    }
+    
+    autoTimerStop(){
+        clearInterval(this.timer)
+    }
+    
+    updatetimertext(sec){
+        const minutes = Math.floor(sec / 60) // 5s / 60 = 0
+        const seconds = sec % 60 //5
+        this.flowerTimer.innerText = `${minutes}:${seconds}`
+    }
+    
+    
+    showTimerandScoreBtn(){
+        this.flowerTimer.style.visibility = 'visible';
+        this.flowerScore.style.visibility = 'visible';
+        
+    
+    }
+    
+    changeStopBtn(){
+        const popupBtn = this.flowerPlayBtn.querySelector('.fa-solid')
+        popupBtn.classList.remove('fa-play')
+        popupBtn.classList.add('fa-stop')
+        this.flowerPlayBtn.style.visibility = 'visible'
+        
+    }
+    
+    playBtnGone(){
+        this.flowerPlayBtn.style.visibility = 'hidden'
+    }
+    
+    //game 초기화
+    initGame(){
+        this.score=0 //reset
+        this.flowerScore.innerText = this.pinkflowerCount //reset
+        //creat pink and purple flowers and appendchild to field
+        this.gameField.init()
+    }
+}
