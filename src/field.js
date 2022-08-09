@@ -1,6 +1,5 @@
 'use strict';
 import * as sound from "./sound.js";
-const pinkflowerSound = new Audio('/sound/pinkflower_pull.mp3')
 
 export default class Field{
 
@@ -10,8 +9,8 @@ export default class Field{
     this.redFlowerCount = redFlowerCount    
     this.field = document.querySelector('.flowergame_field')
     this.fieldSize = this.field.getBoundingClientRect();
-    this.onClick = this.onClick.bind(this)
-    this.field.addEventListener('click', (event)=>{this.onClick(event)})
+    // this.onClick = this.onClick.bind(this)
+    this.field.addEventListener('click', (event)=>this.onClick(event))
     }
 
     setClickListener(onItemClick){
