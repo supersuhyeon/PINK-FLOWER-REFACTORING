@@ -20,13 +20,13 @@ let message;
 switch (reason) {
     case 'cancel' :
     message = 'you want to replay? 👀'
-    sound.stopBackground()
     sound.playAlertSound()
     break;
 
     case 'win':
     message = 'you won! 👍'
     sound.playGameWin()
+    
     break;
 
     case 'lose':

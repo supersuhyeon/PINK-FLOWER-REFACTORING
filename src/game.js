@@ -26,7 +26,7 @@ export default class Game{
 
     this.flowerPlayBtn.addEventListener('click',()=>{
     if (this.isstarted){
-        this.gameStopped(); 
+        this.gameStopped('cancel'); 
     }else{ 
         this.gameStarted(); 
     }
@@ -49,21 +49,15 @@ export default class Game{
     sound.playBackground()
     
 }
-    
-    gameStopped(){
+
+    gameStopped(result){
     this.isstarted = false; //게임이 멈춰진상태에서 클릭을 누르면 재생되어야함 그래서 isstarted = false = gamestarted()
     this.autoTimerStop();
     this.playBtnGone();
-    this.onGameStop && this.onGameStop('cancel')  //game.setGameStopListener((reason)=>{~})                                                       
+    sound.stopBackground()
+    this.onGameStop && this.onGameStop(result)                                     
 }
 
-    finishgame(result){
-    this.isstarted = false;
-    this.autoTimerStop();
-    this.playBtnGone();
-    sound.stopBackground()
-    this.onGameStop && this.onGameStop(result ? 'win' : 'lose')  //game.setGameStopListener((reason)=>{~})
-}
 
     onItemClick = (Item)=>{                      
 
@@ -75,13 +69,16 @@ export default class Game{
            this.score++
             this.remainingScoreBoard();
             if(this.score === this.pinkflowerCount){
-                this.finishgame(true)
+                // this.finishgame(true)
+                this.gameStopped('win')
             }
     
         }else if(Item === 'purpleflower'){
-            this.finishgame(false);
+            // this.finishgame(false);
+            this.gameStopped('lose')
         }else{
-            this.finishgame(false)
+            // this.finishgame(false)
+            this.gameStopped('lose')
         }
     }
 
@@ -99,7 +96,7 @@ export default class Game{
     
             if(currentSec<=0){
                 clearInterval(this.timer)
-                this.finishgame(this.pinkflowerCount===this.score); //boolean
+                this.gameStopped(this.pinkflowerCount===this.score ? 'win' : 'lose'); //boolean
                 return
             }
     
