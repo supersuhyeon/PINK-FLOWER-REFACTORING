@@ -54,8 +54,6 @@ export default class Game{
     this.isstarted = false; //게임이 멈춰진상태에서 클릭을 누르면 재생되어야함 그래서 isstarted = false = gamestarted()
     this.autoTimerStop();
     this.playBtnGone();
-    sound.stopBackground()
-    sound.playAlertSound()
     this.onGameStop && this.onGameStop('cancel')  //game.setGameStopListener((reason)=>{~})                                                       
 }
 
@@ -64,11 +62,6 @@ export default class Game{
     this.autoTimerStop();
     this.playBtnGone();
     sound.stopBackground()
-    if(result){
-        sound.playGameWin()
-    }else{
-        sound.playPurpleFlower()
-    }
     this.onGameStop && this.onGameStop(result ? 'win' : 'lose')  //game.setGameStopListener((reason)=>{~})
 }
 

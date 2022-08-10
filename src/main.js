@@ -1,3 +1,7 @@
+'use strict'; 
+
+
+import * as sound from "./sound.js";
 import Popup from "./popup.js";
 import Game from "./game.js";
 
@@ -16,14 +20,18 @@ let message;
 switch (reason) {
     case 'cancel' :
     message = 'you want to replay? 👀'
+    sound.stopBackground()
+    sound.playAlertSound()
     break;
 
     case 'win':
     message = 'you won! 👍'
+    sound.playGameWin()
     break;
 
     case 'lose':
     message = 'you lost! 💩'
+    sound.playPurpleFlower()
     break;
 
     default :
