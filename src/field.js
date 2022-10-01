@@ -1,5 +1,8 @@
 'use strict';
 import * as sound from "./sound.js";
+import Game from "./game.js";
+
+
 
 export default class Field{
 
@@ -11,10 +14,10 @@ export default class Field{
     this.fieldSize = this.field.getBoundingClientRect();
     // this.onClick = this.onClick.bind(this)
     this.field.addEventListener('click', (event)=>this.onClick(event))
-    }
+}
 
     setClickListener(onItemClick){
-        this.onItemClick = onItemClick; //callback from Game
+        this.onItemClick = onItemClick;
     }
 
     init(){
@@ -50,25 +53,6 @@ export default class Field{
 
 
     onClick(event){
-
-        const target = event.target
-    if(target.classList.contains('pinkflower')){
-        target.remove();
-        sound.playPinkFlower()
-        if(this.onItemClick){ //callback (onItemClick) from Game
-            this.onItemClick('pinkflower') //Item === 'pinkflower'
-        }
-
-    }else if(target.classList.contains('purpleflower')){
-        if(this.onItemClick){
-            this.onItemClick('purpleflower')
-        }
-    }else{
-        if(this.onItemClick){
-            this.onItemClick('redflower')
-        }
+        this.onItemClick && this.onItemClick(event.target)
     }
-    }
-
-
 }

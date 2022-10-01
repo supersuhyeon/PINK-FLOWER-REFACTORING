@@ -8,16 +8,16 @@ export default class Popup{
         this.replayBtn = document.querySelector('.popup_replybtn')
         this.popUpMessage = document.querySelector('.popup_message')
         this.replayBtn.addEventListener('click',()=>{
-            if(this.onClick){
-                this.onClick()
+            if(this.onClick){ //game.gameStarted(); 
+                this.onClick();
+                this.hide();
             }
-            this.hide();
         })
 
     }
 
         setClickListener(onClick){
-            this.onClick = onClick
+            this.onClick = onClick //game.gameStarted(); 
         }
 
         showReply(text){

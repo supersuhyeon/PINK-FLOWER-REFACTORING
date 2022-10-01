@@ -25,20 +25,20 @@ export default class Game{
     title.innerText = `PICK THE ${this.pinkFlowerCount} PINK FLOWERS 🌸`
 
     this.flowerPlayBtn.addEventListener('click',()=>{
-    if (this.isstarted){
-        this.gameStopped('cancel'); 
-    }else{ 
-        this.gameStarted(); 
-    }
-    })
+        if (this.isstarted){
+            this.gameStopped('cancel'); 
+        }else{ 
+            this.gameStarted(); 
+            }
+        })
 
     this.gameField = new Field(pinkFlowerCount, purpleFlowerCount, redFlowerCount);
     this.gameField.setClickListener(this.onItemClick)
-}
+    }
 
-    setGameStopListener(onGameStop){ 
+    setGameStopListener(onGameStop){ //reason
     this.onGameStop = onGameStop
-}
+    }
 
     gameStarted(){ 
     this.isstarted = true; //게임이 시작하고있는상태에서 클릭을 누르면 멈춰야함 그래서 isstarted = true = gamestopped()
@@ -47,8 +47,7 @@ export default class Game{
     this.showTimerandScoreBtn();
     this.autoTimerStart();
     sound.playBackground()
-    
-}
+    }
 
     gameStopped(result){
     this.isstarted = false; //게임이 멈춰진상태에서 클릭을 누르면 재생되어야함 그래서 isstarted = false = gamestarted()
@@ -56,39 +55,36 @@ export default class Game{
     this.playBtnGone();
     sound.stopBackground()
     this.onGameStop && this.onGameStop(result)                                     
-}
+    }
 
 
-    onItemClick = (Item)=>{                      
-
-        if(this.isstarted === false){ //started가 false면 실행하지 말아라 
+    onItemClick = (Item)=>{           
+        if(!this.isstarted){ //started가 false면 실행하지 말아라  
             return
         }
-    
-        if(Item === 'pinkflower'){
-           this.score++
+
+        if(Item.classList.contains('pinkflower')){
+            sound.playPinkFlower()
+            Item.remove()
+            this.score++
             this.remainingScoreBoard();
             if(this.score === this.pinkflowerCount){
-                // this.finishgame(true)
                 this.gameStopped('win')
             }
-    
-        }else if(Item === 'purpleflower'){
-            // this.finishgame(false);
-            this.gameStopped('lose')
-        }else{
-            // this.finishgame(false)
-            this.gameStopped('lose')
+        }else if(Item.classList.contains('purpleflower')){
+                // this.finishgame(false);
+                this.gameStopped('lose')
+            }else{
+                // this.finishgame(false)
+                this.gameStopped('lose')
+            }
         }
-    }
 
     remainingScoreBoard(){
         this.flowerScore.innerText = this.pinkflowerCount - this.score;
     }
     
-    
     autoTimerStart(){
-    
         let currentSec = this.gameDurationSec
         this.updatetimertext(currentSec)
        //const myInterval = setInterval(myFunction,2000); clearInterval(myInterval)
@@ -99,9 +95,7 @@ export default class Game{
                 this.gameStopped(this.pinkflowerCount===this.score ? 'win' : 'lose'); //boolean
                 return
             }
-    
             this.updatetimertext(--currentSec)
-    
        },1000) 
     
     }
@@ -120,8 +114,6 @@ export default class Game{
     showTimerandScoreBtn(){
         this.flowerTimer.style.visibility = 'visible';
         this.flowerScore.style.visibility = 'visible';
-        
-    
     }
     
     changeStopBtn(){
@@ -129,7 +121,6 @@ export default class Game{
         popupBtn.classList.remove('fa-play')
         popupBtn.classList.add('fa-stop')
         this.flowerPlayBtn.style.visibility = 'visible'
-        
     }
     
     playBtnGone(){
