@@ -1,8 +1,4 @@
 'use strict';
-import * as sound from "./sound.js";
-import Game from "./game.js";
-
-
 
 export default class Field{
 
@@ -13,11 +9,17 @@ export default class Field{
     this.field = document.querySelector('.flowergame_field')
     this.fieldSize = this.field.getBoundingClientRect();
     // this.onClick = this.onClick.bind(this)
-    this.field.addEventListener('click', (event)=>this.onClick(event))
+    this.field.addEventListener('click', (event)=> this.onClick(event))
+    // this.field.addEventListener('click', this.onClick)
 }
 
     setClickListener(onItemClick){
         this.onItemClick = onItemClick;
+    }
+
+    onClick (event){
+        this.onItemClick && this.onItemClick(event.target)
+        console.log(this.onClick)
     }
 
     init(){
@@ -49,10 +51,5 @@ export default class Field{
 
     randomNumber(min,max){
         return Math.floor(Math.random() * (max - min)) + min; 
-    }
-
-
-    onClick(event){
-        this.onItemClick && this.onItemClick(event.target)
     }
 }

@@ -38,9 +38,10 @@ switch (reason) {
     }
 
 gameFinishPopup.showReply(message)
-
 })
 
-gameFinishPopup.setClickListener(()=>{
-    game.gameStarted(); 
-})
+// gameFinishPopup.setClickListener(()=>{
+//     game.gameStarted(); 
+// })
+
+gameFinishPopup.setClickListener(()=>{game.gameStarted()})

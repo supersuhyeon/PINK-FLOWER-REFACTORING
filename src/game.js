@@ -31,7 +31,7 @@ export default class Game{
             this.gameStarted(); 
             }
         })
-
+        
     this.gameField = new Field(pinkFlowerCount, purpleFlowerCount, redFlowerCount);
     this.gameField.setClickListener(this.onItemClick)
     }

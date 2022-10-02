@@ -13,11 +13,11 @@ export default class Popup{
                 this.hide();
             }
         })
-
     }
 
         setClickListener(onClick){
             this.onClick = onClick //game.gameStarted(); 
+            console.log(this.onClick)
         }
 
         showReply(text){
@@ -27,6 +27,5 @@ export default class Popup{
 
         hide(){
             this.popup.style.display = 'none'
-        }
-
+                }
 }
