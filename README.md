@@ -20,10 +20,10 @@ HTML, CSS, and Javascript
 1. JS module <br>
    Before refactoring, all functions were configured and executed in one JavaScript file. However, I thought that maintenance and reusability weren't optimal, so I tried to make it modular. <br> Modules are used with special keywords (import/export) or functions, so you need to set properties like **script type="module"** in order for the browser to recognize that the script is a module.
 
-- Before refactoring
+- Before refactoring<br>
   ![logic](https://user-images.githubusercontent.com/94214512/193428105-2affa2eb-5a91-444d-bcd6-7e9d85f48db2.png)
 
-- After refactoring
+- After refactoring<br>
   ![logic-factoring](https://user-images.githubusercontent.com/94214512/193428084-0fd8811a-aa6c-4c4f-8c08-d7eff00a0844.png)<br>
   The game's Javascript could be divided into five modules. In particular, the main, field and game modules are organically connected to each other. Therefore I made member variables with the argument received through the callback function which made it possible to use the data in the class.
 
