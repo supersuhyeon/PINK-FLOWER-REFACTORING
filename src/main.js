@@ -3,7 +3,7 @@
 
 import * as sound from "./sound.js";
 import Popup from "./popup.js";
-import Game from "./game.js";
+import GameBuilder from "./game.js";
 
 //gameFinishPopup = new Popup()
 //game = new Game()
@@ -12,7 +12,13 @@ import Game from "./game.js";
 const gameFinishPopup = new Popup();
 
 
-const game = new Game(3,3,3,3) //gameDuration, pinkFlowerCount, purpleFlowerCount, redFlowerCount
+const game = new GameBuilder() //gameDuration, pinkFlowerCount, purpleFlowerCount, redFlowerCount
+.gameDuration(3)
+.pinkFlowerCount(3)
+.purpleFlowerCount(3)
+.redFlowerCount(3)
+.build()
+
 game.setGameStopListener((reason)=>{
 
 let message;

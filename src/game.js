@@ -3,7 +3,37 @@
 import * as sound from "./sound.js";
 import Field from "./field.js";
 
-export default class Game{
+//Builder Pattern
+export default class GameBuilder {
+    gameDuration(duration){
+        this.gameDuration = duration
+        return this;
+    }
+
+    pinkFlowerCount(num){
+        this.pinkFlowerCount = num
+        return this
+    }
+    purpleFlowerCount(num){
+        this.purpleFlowerCount = num
+        return this
+    }
+    redFlowerCount(num){
+        this.redFlowerCount = num
+        return this
+    }
+
+    build(){
+        return new Game(
+            this.gameDuration,
+            this.pinkFlowerCount,
+            this.purpleFlowerCount,
+            this.redFlowerCount
+        )
+    }
+}
+
+class Game{
 
     constructor(gameDuration, pinkFlowerCount, purpleFlowerCount, redFlowerCount){  
     this.gameDuration = gameDuration
