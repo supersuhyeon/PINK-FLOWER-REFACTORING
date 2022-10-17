@@ -3,8 +3,20 @@
 import * as sound from "./sound.js";
 import Field from "./field.js";
 
+export const Reason = Object.freeze({
+    win : 'win',
+    lose: 'lose',
+    cancel: 'cancel'
+})
+
+export const ItemType = Object.freeze({
+   pinkflower : 'pinkflower',
+   purpleflower : 'purpleflower',
+   redflower:'redflower'
+})
+
 //Builder Pattern
-export default class GameBuilder {
+export class GameBuilder {
     withGameDuration(duration){
         this.gameDuration = duration
         return this;
@@ -56,7 +68,7 @@ class Game{
 
     this.flowerPlayBtn.addEventListener('click',()=>{
         if (this.isstarted){
-            this.gameStopped('cancel'); 
+            this.gameStopped(Reason.cancel); 
         }else{ 
             this.gameStarted(); 
             }
@@ -71,7 +83,7 @@ class Game{
     }
 
     gameStarted(){ 
-    this.isstarted = true; //게임이 시작하고있는상태에서 클릭을 누르면 멈춰야함 그래서 isstarted = true = gamestopped()
+    this.isstarted = true; 
     this.initGame();
     this.changeStopBtn();
     this.showTimerandScoreBtn();
@@ -80,7 +92,7 @@ class Game{
     }
 
     gameStopped(result){
-    this.isstarted = false; //게임이 멈춰진상태에서 클릭을 누르면 재생되어야함 그래서 isstarted = false = gamestarted()
+    this.isstarted = false; 
     this.autoTimerStop();
     this.playBtnGone();
     sound.stopBackground()
@@ -93,20 +105,20 @@ class Game{
             return
         }
 
-        if(Item.classList.contains('pinkflower')){
+        if(Item.classList.contains(ItemType.pinkflower)){
             sound.playPinkFlower()
             Item.remove()
             this.score++
             this.remainingScoreBoard();
             if(this.score === this.pinkflowerCount){
-                this.gameStopped('win')
+                this.gameStopped(Reason.win)
             }
-        }else if(Item.classList.contains('purpleflower')){
+        }else if(Item.classList.contains(ItemType.purpleflower)){
                 // this.finishgame(false);
-                this.gameStopped('lose')
+                this.gameStopped(Reason.lose)
             }else{
                 // this.finishgame(false)
-                this.gameStopped('lose')
+                this.gameStopped(Reason.lose)
             }
         }
 
@@ -122,7 +134,7 @@ class Game{
     
             if(currentSec<=0){
                 clearInterval(this.timer)
-                this.gameStopped(this.pinkflowerCount===this.score ? 'win' : 'lose'); //boolean
+                this.gameStopped(this.pinkflowerCount===this.score ? Reason.win : Reason.lose); //boolean
                 return
             }
             this.updatetimertext(--currentSec)

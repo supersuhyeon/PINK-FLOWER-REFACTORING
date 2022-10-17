@@ -1,5 +1,7 @@
 'use strict';
 
+import { ItemType } from "./game.js";
+
 export default class Field{
 
     constructor(pinkFlowerCount, purpleFlowerCount, redFlowerCount){
@@ -24,9 +26,9 @@ export default class Field{
 
     init(){
         this.field.innerHTML = ''; //reset
-        this.addItem('pinkflower',this.pinkFlowerCount,'/img/pinkflower.png')
-        this.addItem('purpleflower',this.purpleFlowerCount,'/img/purpleflower.png')
-        this.addItem('redflower',this.redFlowerCount,'/img/redflower.png')
+        this.addItem(ItemType.pinkflower,this.pinkFlowerCount,'/img/pinkflower.png')
+        this.addItem(ItemType.purpleflower,this.purpleFlowerCount,'/img/purpleflower.png')
+        this.addItem(ItemType.redflower,this.redFlowerCount,'/img/redflower.png')
     }
 
     addItem(className,Count,imgSrc){

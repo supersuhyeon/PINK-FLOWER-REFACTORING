@@ -1,17 +1,10 @@
 'use strict'; 
 
-
 import * as sound from "./sound.js";
 import Popup from "./popup.js";
-import GameBuilder from "./game.js";
-
-//gameFinishPopup = new Popup()
-//game = new Game()
-//Field = new Field()
+import {GameBuilder, Reason} from "./game.js";
 
 const gameFinishPopup = new Popup();
-
-
 const game = new GameBuilder() //gameDuration, pinkFlowerCount, purpleFlowerCount, redFlowerCount
 .withGameDuration(3)
 .withPinkFlowerCount(3)
@@ -25,18 +18,17 @@ game.setGameStopListener((reason)=>{
 
 let message;
 switch (reason) {
-        case 'cancel' :
+        case Reason.cancel :
         message = 'you want to replay? 👀'
         sound.playAlertSound()
         break;
 
-        case 'win':
+        case Reason.win:
         message = 'you won! 👍'
         sound.playGameWin()
-        
         break;
 
-        case 'lose':
+        case Reason.lose:
         message = 'you lost! 💩'
         sound.playPurpleFlower()
         break;
@@ -47,9 +39,5 @@ switch (reason) {
 
 gameFinishPopup.showReply(message)
 })
-
-// gameFinishPopup.setClickListener(()=>{
-//     game.gameStarted(); 
-// })
 
 gameFinishPopup.setClickListener(()=>{game.gameStarted()})
