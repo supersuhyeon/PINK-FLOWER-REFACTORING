@@ -13,11 +13,13 @@ const gameFinishPopup = new Popup();
 
 
 const game = new GameBuilder() //gameDuration, pinkFlowerCount, purpleFlowerCount, redFlowerCount
-.gameDuration(3)
-.pinkFlowerCount(3)
-.purpleFlowerCount(3)
-.redFlowerCount(3)
+.withGameDuration(3)
+.withPinkFlowerCount(3)
+.withPurpleFlowerCount(3)
+.withRedFlowerCount(3)
 .build()
+
+console.log(game)
 
 game.setGameStopListener((reason)=>{
 

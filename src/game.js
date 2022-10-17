@@ -5,20 +5,20 @@ import Field from "./field.js";
 
 //Builder Pattern
 export default class GameBuilder {
-    gameDuration(duration){
+    withGameDuration(duration){
         this.gameDuration = duration
         return this;
     }
 
-    pinkFlowerCount(num){
+    withPinkFlowerCount(num){
         this.pinkFlowerCount = num
         return this
     }
-    purpleFlowerCount(num){
+    withPurpleFlowerCount(num){
         this.purpleFlowerCount = num
         return this
     }
-    redFlowerCount(num){
+    withRedFlowerCount(num){
         this.redFlowerCount = num
         return this
     }
@@ -28,7 +28,7 @@ export default class GameBuilder {
             this.gameDuration,
             this.pinkFlowerCount,
             this.purpleFlowerCount,
-            this.redFlowerCount
+            this.redFlowerCount 
         )
     }
 }
