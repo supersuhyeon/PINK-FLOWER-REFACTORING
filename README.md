@@ -30,8 +30,8 @@ HTML, CSS, and Javascript
 <br>
 
 2.  Builder Pattern <br>
-    when new instance's constructors are more than 2 and when they are just numbers,
-    it is difficult to understand what these number means so I used a builder pattern for improving the readbility reason.
+    when a new instance's parameters are more than 2 and when they are just numbers,
+    it is difficult to understand what these numbers mean so I used a builder pattern to improve readbility.
 
 ```js
 //main.js
