@@ -2,8 +2,8 @@
 
 ![ezgif com-gif-maker (4)](https://user-images.githubusercontent.com/94214512/186960305-53721f91-b85b-4f99-8ec2-2446c965df9d.gif) <br>
 This is a mini-game with a 5 second timer. To win, you must click on all 10 pink flowers before time is up. <br>
-[Play flower garden](https://warm-granita-4598c8.netlify.app/)<br>
-[Before refactoring github](https://github.com/supersuhyeon/PINK-FLOWER-PROJECT)
+[Play refactoring flower garden](https://harmonious-crisp-159f01.netlify.app/)<br>
+[Before performance improvement github](https://github.com/supersuhyeon/PINK-FLOWER-PROJECT)
 
 ### Goals of the project
 
@@ -27,73 +27,63 @@ HTML, CSS, and Javascript
   ![logic-factoring](https://user-images.githubusercontent.com/94214512/193428084-0fd8811a-aa6c-4c4f-8c08-d7eff00a0844.png)<br>
   The game's Javascript could be divided into five modules. In particular, the main, field and game modules are organically connected to each other. Therefore I made member variables with the argument received through the callback function which made it possible to use the data in the class.
 
-**_main.js_**
+<br>
+
+2.  Builder Pattern <br>
+    when new instance's constructors are more than 2 and when they are just numbers,
+    it is difficult to understand what these number means so I used a builder pattern for improving the readbility reason.
 
 ```js
-const game = new Game(3,3,3,3) //gameDuration, pinkFlowerCount, purpleFlowerCount, redFlowerCount
-game.setGameStopListener((reason)=>{
-
-let message;
-switch (reason) {
-        case 'cancel' :
-        message = 'you want to replay? 👀'
-        sound.playAlertSound()
-        break;
-
-        case 'win':
-        message = 'you won! 👍'
-        sound.playGameWin()
-
-        break;
-
-        case 'lose':
-        message = 'you lost! 💩'
-        sound.playPurpleFlower()
-        break;
-
-        default :
-        throw new Error('not vaild reason')
-    }
+//main.js
+//Before
+const game = new Game(3, 3, 3, 3);
 ```
 
-**_game.js_**
+```js
+//main.js
+//After
+const game = new GameBuilder()
+  .withGameDuration(3)
+  .withPinkFlowerCount(3)
+  .withPurpleFlowerCount(3)
+  .withRedFlowerCount(3)
+  .build();
+```
 
 ```js
-export default class Game {
-  constructor(
-    gameDuration,
-    pinkFlowerCount,
-    purpleFlowerCount,
-    redFlowerCount
-  ) {
-    this.gameDuration = gameDuration;
-    this.pinkFlowerCount = pinkFlowerCount;
-    this.purpleFlowerCount = purpleFlowerCount;
-    this.redFlowerCount = redFlowerCount;
+//Game.js
+//Builder Pattern
+export class GameBuilder {
+  withGameDuration(duration) {
+    this.gameDuration = duration;
+    return this;
+  }
 
-    this.gameField = new Field(
-      pinkFlowerCount,
-      purpleFlowerCount,
-      redFlowerCount
+  withPinkFlowerCount(num) {
+    this.pinkFlowerCount = num;
+    return this;
+  }
+  withPurpleFlowerCount(num) {
+    this.purpleFlowerCount = num;
+    return this;
+  }
+  withRedFlowerCount(num) {
+    this.redFlowerCount = num;
+    return this;
+  }
+
+  build() {
+    return new Game(
+      this.gameDuration,
+      this.pinkFlowerCount,
+      this.purpleFlowerCount,
+      this.redFlowerCount
     );
-    this.gameField.setClickListener(this.onItemClick);
-  }
-
-  setGameStopListener(onGameStop) {
-    this.onGameStop = onGameStop; //member variable
-  }
-
-  gameStopped(result) {
-    this.isstarted = false;
-    this.autoTimerStop();
-    this.playBtnGone();
-    sound.stopBackground();
-    this.onGameStop && this.onGameStop(result);
   }
 }
 ```
 
-2. Binding <br>
+3. Binding <br>
    When a function in a class is passed to another callback function, the information of the class that contains the function is lost.
    In order to remember the function, one can use `this` binding that can bind a class and `this` function. You can bind it directly or use an arrow function.
 
@@ -192,7 +182,7 @@ myFunc();
 //however closures have to remember the environment in which they were created, which can cause memory loss.
 ```
 
-3. Difference of `this` Between Arrow Functions and Regular Functions
+4. Difference of `this` Between Arrow Functions and Regular Functions
 
 - **Regular function** <br>
   In JavaScript, every time a function is executed, an object called `this` is added inside the function. Below is the situation where `this` is bound in a regular function.<br>
@@ -292,4 +282,3 @@ A regular function points to the object it depends on as `this`, and an arrow fu
 
 The mini flower garden game was a small sized project so not that many things were divided. But it was definitely good to learn about how and why we need to make small components in a big project. I had two major issues while refactoring, binding and callback functions. I expected that when calling a function after getting a method from an object, the original object would be used as the function's `this`. However that was incorrect and so I needed to study how `this` and `bind()` work. Initially, I was confused, so I made a test.js and checked every single object and function through the console.
 This was a good chance to review regular and arrow functions. I knew about closure before but I couldn't fathom how this concept works in practice. At that time, it was more like an abstract theory until I practiced it. The review and implementation of these concepts gave me a deeper understanding of how to use arrow functions to use callback functions. I'm glad that I didn't give up on understanding this whole concept when it was confusing. This learning process also showed me how interconnected these concepts are to each other.
-My next step is to refactor variable names using builder patterns and ensure the type in JavaScript using `object.freeze`. I wonder what kind of errors I will discover next.
